@@ -23,21 +23,27 @@ def move_file(file_name: str, current_dir_path: str, new_dir: str):
 
 
 if __name__ == "__main__":
-    home = str(Path.home())
-    os.chdir('{0}/Downloads'.format(home))
-    download_path = os.getcwd()
+    try:
+        home = str(Path.home())
+        os.chdir('{0}/Downloads'.format(home))
+        download_path = os.getcwd()
 
-    dirs = get_directories(download_path)
+        dirs = get_directories(download_path)
 
-    for f in listdir(download_path):
-        if isfile(join(download_path, f)):
-            _, extension = splitext(f)
-            extension = extension[1:]
+        for f in listdir(download_path):
+            if isfile(join(download_path, f)):
+                _, extension = splitext(f)
+                extension = extension[1:]
 
-            if extension == '':
-                extension = 'no_extension'
+                if extension == '':
+                    extension = 'no_extension'
 
-            if not dirs.get(extension):
-                makedirs(extension, exist_ok=True)
+                if not dirs.get(extension):
+                    makedirs(extension, exist_ok=True)
 
-            move_file(f, download_path, extension)
+                move_file(f, download_path, extension)
+
+        print('Finished')
+
+    except:
+        print("An error occurred")

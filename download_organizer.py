@@ -2,7 +2,7 @@
 
 import os
 
-from os import listdir, replace
+from os import listdir, replace, makedirs
 from os.path import isfile, join, splitext
 from pathlib import Path
 
@@ -32,5 +32,12 @@ if __name__ == "__main__":
     for f in listdir(download_path):
         if isfile(join(download_path, f)):
             _, extension = splitext(f)
+            extension = extension[1:]
 
-            
+            if extension == '':
+                extension = 'no_extension'
+
+            if not dirs.get(extension):
+                makedirs(extension, exist_ok=True)
+
+            move_file(f, download_path, extension)

@@ -23,11 +23,25 @@ def move_file(file_name: str, current_dir_path: str, new_dir: str):
 
 
 def get_downloads_path():
-    home = str(Path.home())
-    os.chdir('{0}/Downloads'.format(home))
-    download_path = os.getcwd()
-
-    return download_path
+    """Returns the default downloads path for linux or windows"""
+    if os.name == 'nt':
+        try:
+            import winreg
+            sub_key = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+            downloads_guid = '{374DE290-123F-4565-9164-39C4925E467B}'
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, sub_key) as key:
+                location = winreg.QueryValueEx(key, downloads_guid)[0]
+            return location
+        except:
+            print('error')
+    else:
+        try:
+            download_path = os.path.join(os.path.expanduser('~'), 'downloads')
+            os.chdir(download_path)
+        except FileNotFoundError:
+            download_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        finally:
+            return download_path
 
 
 if __name__ == "__main__":

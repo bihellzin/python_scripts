@@ -22,12 +22,17 @@ def move_file(file_name: str, current_dir_path: str, new_dir: str):
     replace(current_full_path, new_full_path)
 
 
+def get_downloads_path():
+    home = str(Path.home())
+    os.chdir('{0}/Downloads'.format(home))
+    download_path = os.getcwd()
+
+    return download_path
+
+
 if __name__ == "__main__":
     try:
-        home = str(Path.home())
-        os.chdir('{0}/Downloads'.format(home))
-        download_path = os.getcwd()
-
+        download_path = get_downloads_path()
         dirs = get_directories(download_path)
 
         for f in listdir(download_path):

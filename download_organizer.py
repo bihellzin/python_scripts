@@ -6,6 +6,13 @@ from os import listdir, replace, makedirs
 from os.path import isfile, join, splitext
 from pathlib import Path
 
+
+def get_correct_slash():
+    if os.name == 'nt':
+        return '\\'
+    return '/'
+
+
 def get_directories(directory_path: str) -> dict:
     dirs = {}
     for item in listdir(directory_path):
@@ -16,8 +23,9 @@ def get_directories(directory_path: str) -> dict:
 
 
 def move_file(file_name: str, current_dir_path: str, new_dir: str):
-    current_full_path = current_dir_path + '/' + file_name
-    new_full_path = current_dir_path + '/' + new_dir + '/' + file_name
+    slash = get_correct_slash()
+    current_full_path = current_dir_path + slash + file_name
+    new_full_path = current_dir_path + slash + new_dir + slash + file_name
 
     replace(current_full_path, new_full_path)
 
@@ -33,7 +41,7 @@ def get_downloads_path():
                 location = winreg.QueryValueEx(key, downloads_guid)[0]
             return location
         except:
-            print('error')
+            input('An error occurred\nPress ENTER to exit')
     else:
         try:
             download_path = os.path.join(os.path.expanduser('~'), 'downloads')
@@ -48,12 +56,12 @@ if __name__ == "__main__":
     try:
         download_path = get_downloads_path()
         dirs = get_directories(download_path)
+        os.chdir(download_path)
 
         for f in listdir(download_path):
             if isfile(join(download_path, f)):
                 _, extension = splitext(f)
                 extension = extension[1:]
-
                 if extension == '':
                     extension = 'no_extension'
 
@@ -66,3 +74,6 @@ if __name__ == "__main__":
 
     except:
         print("An error occurred")
+
+    finally:
+        input('Press ENTER to exit')

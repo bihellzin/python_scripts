@@ -22,6 +22,6 @@ if __name__ == "__main__":
         print("|  {i}  |".format(i=i))
     print("|=============================================================|")
     print("|  GPU:           +{}.0°C  (high = +90.0°C, crit = +120.0°C)  |".format(gpu_output[8:10]))
-    print("|  NVMe:          +{}.0°C  (high = +70.0°C, crit = + 70.0°C)   |".format(nvme_output[38:40]))
+    print("|  NVMe:          +{}.0°C  (high = +70.0°C, crit = + 70.0°C)  |".format(nvme_output[38:40]))
 
     print("+-------------------------------------------------------------+")
